@@ -4,8 +4,6 @@ services:
     image: mongo:latest
     container_name: neobase-mongodb
     restart: always
-    ports:
-      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: neobase
       MONGO_INITDB_ROOT_PASSWORD: neobase
@@ -25,8 +23,6 @@ services:
       --maxmemory 512mb
       --maxmemory-policy allkeys-lru
       --stop-writes-on-bgsave-error no
-    ports:
-      - 6379:6379
     volumes:
       - neobase-redis-data:/data
     networks:
