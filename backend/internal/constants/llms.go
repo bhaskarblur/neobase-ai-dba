@@ -3,6 +3,7 @@ package constants
 const (
 	OpenAI = "openai"
 	Gemini = "gemini"
+	Ollama = "ollama"
 )
 
 func GetLLMResponseSchema(provider string, dbType string) interface{} {
@@ -37,7 +38,23 @@ func GetLLMResponseSchema(provider string, dbType string) interface{} {
 		default:
 			return GeminiPostgresLLMResponseSchema
 		}
+	case Ollama:
+		switch dbType {
+		case DatabaseTypePostgreSQL:
+			return OllamaPostgreSQLLLMResponseSchema
+		case DatabaseTypeYugabyteDB:
+			return OllamaYugabyteDBLLMResponseSchema
+		case DatabaseTypeMySQL:
+			return OllamaMySQLLLMResponseSchema
+		case DatabaseTypeClickhouse:
+			return OllamaClickhouseLLMResponseSchema
+		case DatabaseTypeMongoDB:
+			return OllamaMongoDBLLMResponseSchema
+		default:
+			return OllamaPostgreSQLLLMResponseSchema
+		}
 	}
+
 	return ""
 }
 
@@ -73,6 +90,21 @@ func GetSystemPrompt(provider string, dbType string) string {
 			return GeminiMongoDBPrompt
 		default:
 			return GeminiPostgreSQLPrompt // Default to PostgreSQL
+		}
+	case Ollama:
+		switch dbType {
+		case DatabaseTypePostgreSQL:
+			return OllamaPostgreSQLPrompt
+		case DatabaseTypeYugabyteDB:
+			return OllamaYugabyteDBPrompt
+		case DatabaseTypeMySQL:
+			return OllamaMySQLPrompt
+		case DatabaseTypeClickhouse:
+			return OllamaClickhousePrompt
+		case DatabaseTypeMongoDB:
+			return OllamaMongoDBPrompt
+		default:
+			return OllamaPostgreSQLPrompt
 		}
 	}
 	return ""
